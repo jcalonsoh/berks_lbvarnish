@@ -1,0 +1,44 @@
+# This is a basic VCL configuration file for varnish.  See the vcl(7)
+# man page for details on VCL syntax and semantics.
+#
+
+backend chile00 {
+    .host = "192.168.1.100";  # IP address of your backend (Apache, nginx, etc.)
+    .port = "80";       # Port your backend is listening on
+    .connect_timeout = 180s;
+    .first_byte_timeout = 60s;
+    .between_bytes_timeout = 20s;
+    .probe = {
+        .url = "/";
+        .timeout = 34ms;
+        .interval = 1s;
+        .window = 10;
+        .threshold = 8;
+    }
+}
+
+backend chile01 {
+    .host = "192.168.1.101";  # IP address of your backend (Apache, nginx, etc.)
+    .port = "80";       # Port your backend is listening on
+    .connect_timeout = 180s;
+    .first_byte_timeout = 60s;
+    .between_bytes_timeout = 20s;
+    .probe = {
+        .url = "/";
+        .timeout = 34ms;
+        .interval = 1s;
+        .window = 10;
+        .threshold = 8;
+    }
+}
+
+director chile round-robin {
+    { .backend = chile00; }
+    { .backend = chile01; }
+}
+
+sub vcl_recv
+{
+    set req.backend = chile;
+    return (pass);
+}

@@ -16,14 +16,14 @@ rpm_package "varnish" do
   action :install
 end
 
-package "httpd"
-
-service "httpd" do
-  action [ :enable, :start ]
-end
-
-package "varnish"
-
-service "varnish" do
-  action [ :enable, :start ]
-end
+# package "httpd"
+#
+# service "httpd" do
+#   action [ :enable, :start ]
+# end
+#
+# package "varnish"
+#
+# service "varnish" do
+#   action [ :enable, :start ]
+# end
