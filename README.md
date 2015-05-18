@@ -1,4 +1,4 @@
-# lbvarnish cookbook
+# agentJ_lbvarnish cookbook
 
 # Requirements
 
