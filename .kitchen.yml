@@ -1,16 +1,21 @@
 ---
 driver:
   name: vagrant
+  box: chef-centos-6.6
+  box_url:  https://atlas.hashicorp.com/jcalonsoh/boxes/chef-centos-6.6/versions/1.0.0/providers/virtualbox.box
+  customize:
+    memory: 1024
+    cpus: 2
 
 provisioner:
   name: chef_solo
+  require_chef_omnibus: 11.10.4
 
 platforms:
-  - name: ubuntu-12.04
-  - name: centos-6.4
+  - name: chef-centos-6.6
 
 suites:
   - name: default
     run_list:
-      - recipe[lbvarnish::default]
+      - recipe[base::default]
     attributes:
