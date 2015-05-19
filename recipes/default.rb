@@ -15,3 +15,4 @@ varnish_install 'default' do
   vendor_repo true
   vendor_version '3.0'
 end
+
