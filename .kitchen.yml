@@ -4,23 +4,26 @@ driver:
   box: chef-centos-6.6
   box_url:  https://atlas.hashicorp.com/jcalonsoh/boxes/chef-centos-6.6/versions/1.0.0/providers/virtualbox.box
   network:
-    - ["forwarded_port", {guest: 80, host: 8080}]
-    - ["forwarded_port", {guest: 6081, host: 9090}]
+    - ["forwarded_port", {guest: 6081, host: 8080}]
   customize:
     memory: 1024
-    cpus: 2
+    cpus: 4
+    nictype2: 'Am79C970A'
   synced_folders:
     - ["./chef", "/chef"]
 
 provisioner:
-  name: chef_zero
-  require_chef_omnibus: latest
+  name: chef_solo
+  chef_omnibus_url: file:///chef/installer/install.sh
 
 platforms:
   - name: chef-centos-6.6
+    driver:
+      network:
+        - ['public_network', bridge: 'em1']
 
 suites:
-  - name: default
+  - name: loadbalancer
     run_list:
       - recipe[agentJ_lbvarnish::default]
     attributes:
