@@ -13,12 +13,6 @@ end
 
 include_recipe 'agentJ_lbvarnish::install'
 
-# varnish_install 'default' do
-#   package_name 'varnish'
-#   vendor_repo true
-#   vendor_version '3.0'
-# end
-
 servers = []
 
 search(:node, 'role:agentJwebserver').each do |server|
