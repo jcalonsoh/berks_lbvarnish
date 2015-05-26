@@ -1,11 +1,7 @@
 AllCops:
  Exclude:
-   - 'Guardfile'
-   - 'Vagrantfile'
-   - 'ThorFile'
-   - 'Rakefile'
-   - 'Gemfile'
-   - 'Berksfile'
+   - '*file'
+   - metadata.rb
 
 Metrics/LineLength:
  Max: 170
@@ -16,3 +12,7 @@ Metrics/AbcSize:
 Metrics/MethodLength:
  CountComments: false  # count full line comments?
  Max: 20
+
+Style/IndentationWidth:
+  # Number of spaces for each indentation level.
+  Width: 2

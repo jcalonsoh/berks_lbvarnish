@@ -14,7 +14,7 @@ gem 'knife-ec2'
 
 gem 'serverspec', '~> 2.17.0'
 gem 'chefspec', '~> 4.2.0'
-gem 'rubocop', '~> 0.31.0'
+gem 'rubocop'
 
 # Test Automation
 group :development do

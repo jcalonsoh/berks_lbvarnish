@@ -16,22 +16,22 @@ describe 'agentJ_lbvarnish::default' do
       server.create_role('agentJwebserver')
       node_web1 = stub_node('node_web1', platform: 'centos', version: '6.6')
       node_web1.set['network']['interfaces']['eth1']['addresses']['172.17.101.103'] = {
-          'netmask' => '255.255.255.0',
-          'broadcast' => '172.17.101.101',
-          'family' => 'inet'
+        'netmask' => '255.255.255.0',
+        'broadcast' => '172.17.101.101',
+        'family' => 'inet'
       }
       node_web1.set['agentJwebserver'] = true
       node_web1.automatic['hostname'] = 'web1-chef-centos-66.vagrantup.com'
-      server.create_node(node_web1,  { run_list: ['role[agentJwebserver]']})
+      server.create_node(node_web1,  run_list: ['role[agentJwebserver]'])
       node_web2 = stub_node('node_web2', platform: 'centos', version: '6.6')
       node_web2.set['network']['interfaces']['eth1']['addresses']['172.17.101.104'] = {
-          'netmask' => '255.255.255.0',
-          'broadcast' => '172.17.101.101',
-          'family' => 'inet'
+        'netmask' => '255.255.255.0',
+        'broadcast' => '172.17.101.101',
+        'family' => 'inet'
       }
       node_web2.set['agentJwebserver'] = true
       node_web2.automatic['hostname'] = 'web2-chef-centos-66.vagrantup.com'
-      server.create_node(node_web2, { run_list: ['role[agentJwebserver]']})
+      server.create_node(node_web2, run_list: ['role[agentJwebserver]'])
     end.converge(described_recipe)
   end
 
@@ -53,7 +53,6 @@ describe 'agentJ_lbvarnish::default' do
     end
   end
 
-
   context 'Enabling and Starting Varnish after ' do
     it 'Test starts a service varnish after remote_file' do
       expect(chef_run).to start_service('varnish')
@@ -70,7 +69,6 @@ describe 'agentJ_lbvarnish::default' do
     end
   end
 
-
   context 'Find servers and role for template' do
     it 'searches the Chef Server for roles' do
       expect(chef_run).to write_log('nodes with an attribute').with_message(<<-EOH.gsub(/^ {8}/, '').strip)
@@ -79,6 +77,4 @@ describe 'agentJ_lbvarnish::default' do
       EOH
     end
   end
-
 end
-

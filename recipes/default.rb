@@ -20,15 +20,15 @@ search(:node, 'role:agentJwebserver').each do |server|
   servers << serv.detect { |_, value| value['family'] == 'inet' }.first
 end
 
-template "default.vcl" do
-  source "default.vcl.erb"
-  path "/etc/varnish/default.vcl"
+template 'default.vcl' do
+  source 'default.vcl.erb'
+  path '/etc/varnish/default.vcl'
   variables(servers: servers)
   notifies :restart, 'service[varnish]', :immediately
 end
 
-service "varnish" do
-  action [ :enable, :start ]
+service 'varnish' do
+  action [:enable, :start]
 end
 
 nodes = search(:node, 'agentJwebserver: *')
