@@ -19,15 +19,3 @@ rpm_package "varnish" do
 end
 
 package "varnish"
-
-# package "httpd"
-#
-# service "httpd" do
-#   action [ :enable, :start ]
-# end
-#
-#
-#
-# service "varnish" do
-#   action [ :enable, :start ]
-# end

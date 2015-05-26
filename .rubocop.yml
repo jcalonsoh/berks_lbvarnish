@@ -1,0 +1,18 @@
+AllCops:
+ Exclude:
+   - 'Guardfile'
+   - 'Vagrantfile'
+   - 'ThorFile'
+   - 'Rakefile'
+   - 'Gemfile'
+   - 'Berksfile'
+
+Metrics/LineLength:
+ Max: 170
+
+Metrics/AbcSize:
+ Max: 30
+
+Metrics/MethodLength:
+ CountComments: false  # count full line comments?
+ Max: 20

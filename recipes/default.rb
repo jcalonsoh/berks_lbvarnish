@@ -30,3 +30,10 @@ end
 service "varnish" do
   action [ :enable, :start ]
 end
+
+nodes = search(:node, 'agentJwebserver: *')
+log 'nodes with an attribute' do
+  message nodes.map { |node|
+            "#{node.name}, hostname: #{node['hostname']}, ip: #{node['network']['interfaces']['eth1']['addresses'].detect { |_, value| value['family'] == 'inet' }.first}"
+          }.join("\n")
+end

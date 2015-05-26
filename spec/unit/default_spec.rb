@@ -10,36 +10,30 @@
 require File.expand_path('spec/spec_helper')
 
 describe 'agentJ_lbvarnish::default' do
-#  let(:shellout) { double('shellout') }
   let(:tempy) { Chef::Config[:file_cache_path] }
-  let(:ip_node_web1) { '172.17.101.103' }
-  let(:ip_node_web2) { '172.17.101.104' }
   let(:chef_run) do
-    ChefSpec::ServerRunner.new do |node, server|
-      server.create_role('agentJwebserver', {run_list: 'recipe[agentJ_nginx]'})
-      node_web1 = stub_node('web1-chef-centos-66.vagrantup.com', platform: 'centos', version: '6.6')
-      node_web1.set['network']['interfaces']['eth1']['addresses']["#{ip_node_web1}"] = {
+    ChefSpec::ServerRunner.new do |_node, server|
+      server.create_role('agentJwebserver')
+      node_web1 = stub_node('node_web1', platform: 'centos', version: '6.6')
+      node_web1.set['network']['interfaces']['eth1']['addresses']['172.17.101.103'] = {
           'netmask' => '255.255.255.0',
           'broadcast' => '172.17.101.101',
           'family' => 'inet'
       }
+      node_web1.set['agentJwebserver'] = true
+      node_web1.automatic['hostname'] = 'web1-chef-centos-66.vagrantup.com'
       server.create_node(node_web1,  { run_list: ['role[agentJwebserver]']})
-      node_web2 = stub_node('web2-chef-centos-66.vagrantup.com', platform: 'centos', version: '6.6')
-      node_web2.set['network']['interfaces']['eth1']['addresses']["#{ip_node_web2}"] = {
+      node_web2 = stub_node('node_web2', platform: 'centos', version: '6.6')
+      node_web2.set['network']['interfaces']['eth1']['addresses']['172.17.101.104'] = {
           'netmask' => '255.255.255.0',
           'broadcast' => '172.17.101.101',
           'family' => 'inet'
       }
+      node_web2.set['agentJwebserver'] = true
+      node_web2.automatic['hostname'] = 'web2-chef-centos-66.vagrantup.com'
       server.create_node(node_web2, { run_list: ['role[agentJwebserver]']})
     end.converge(described_recipe)
   end
-
-=begin
-  before do
-    allow(Mixlib::ShellOut).to receive(:new).and_return(shellout)
-    allow(shellout).to receive(:run_command).and_return(shellout)
-  end
-=end
 
   before('remote_file') do
     expect(chef_run).to create_remote_file("#{tempy}/varnish-3.0.el6.rpm")
@@ -70,14 +64,21 @@ describe 'agentJ_lbvarnish::default' do
     end
   end
 
-  it 'template file after remote_file' do
-    expect(chef_run).to create_template('default.vcl')
+  context 'Template File find' do
+    it 'template file after remote_file' do
+      expect(chef_run).to create_template('default.vcl')
+    end
+  end
 
-    #expect(@servers).to match(ip_node_web1)
 
-    #expect(chef_run).to render_file('default.vcl.erb')
-    #                        .with_content("#{ip_node_web1}")
-
+  context 'Find servers and role for template' do
+    it 'searches the Chef Server for roles' do
+      expect(chef_run).to write_log('nodes with an attribute').with_message(<<-EOH.gsub(/^ {8}/, '').strip)
+        node_web1, hostname: web1-chef-centos-66.vagrantup.com, ip: 172.17.101.103
+        node_web2, hostname: web2-chef-centos-66.vagrantup.com, ip: 172.17.101.104
+      EOH
+    end
   end
 
 end
+

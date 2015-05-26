@@ -13,7 +13,7 @@ driver:
     - ["./chef", "/chef"]
 
 provisioner:
-  name: chef_solo
+  name: chef_zero
   chef_omnibus_url: file:///chef/installer/install.sh
 
 platforms:
