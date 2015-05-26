@@ -44,9 +44,9 @@ describe file('/etc/varnish/default.vcl') do
 end
 
 describe file('/etc/varnish/default.vcl') do
-  its(:content) { should match /172.17.101.104/ }
+  its(:content) { should match(/172.17.101.104/) }
 end
 
 describe file('/etc/varnish/default.vcl') do
-  its(:content) { should match /172.17.101.103/ }
+  its(:content) { should match(/172.17.101.103/) }
 end
