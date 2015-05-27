@@ -12,10 +12,4 @@ require 'chefspec'
 require 'chefspec/berkshelf'
 require 'chef/application'
 
-RSpec.configure do |config|
-  config.before(:each) do
-    Chef::Config[:file_cache_path] = '/tmp/chef_cache'
-  end
-end
-
 at_exit { ChefSpec::Coverage.report! }

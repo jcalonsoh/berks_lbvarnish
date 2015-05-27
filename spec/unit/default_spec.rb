@@ -78,3 +78,16 @@ describe 'agentJ_lbvarnish::default' do
     end
   end
 end
+
+describe 'agentJ_lbvarnish::default on Chef SoloRunner' do
+  let(:chef_run) do
+    runner = ChefSpec::SoloRunner.new(
+      platform: 'centos', version: '6.6'
+    )
+    runner.converge(described_recipe)
+  end
+
+  it 'raise an exception using SoloRunner' do
+    expect { chef_run }.to raise_error
+  end
+end
